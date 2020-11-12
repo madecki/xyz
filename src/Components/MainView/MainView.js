@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Table from '../Table/Table';
 import { getWalletData, walletValidation } from '../../requests';
+import Nav from '../Nav/Nav';
+import { v4 as uuidv4 } from 'uuid';
 import './MainView.css';
 
 function MainView() {
@@ -42,11 +44,7 @@ function MainView() {
 
   return(
     <>
-      <nav>
-        <div className='container'>
-        
-        </div>
-      </nav>
+      <Nav />
       <div className='container container--mainview'>
         <aside>
           <label htmlFor='walletFinder'>Search for a wallet</label>
@@ -66,9 +64,9 @@ function MainView() {
           )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
 
-          {wallets.map(wallet => {
+          {wallets.map((wallet) => {
             return (
-              <input className='wallet-input' type="text" value={wallet}/>
+              <input className='wallet-input' type="text" value={wallet} readOnly key={uuidv4()} />
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}

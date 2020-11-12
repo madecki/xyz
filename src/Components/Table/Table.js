@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
+import { v4 as uuidv4 } from 'uuid';
 import './Table.css';
 
 function Table({walletsInfo}) {
@@ -16,7 +17,7 @@ function Table({walletsInfo}) {
         <tbody>
           {walletsInfo.map(({ address, balance, create_time, latest_opration_time }) => {
             return (
-              <tr>
+              <tr key={uuidv4()}>
                 <td>{address}</td>
                 <td>{balance}</td>
                 <td>
