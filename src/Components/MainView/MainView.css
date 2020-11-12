@@ -6,19 +6,59 @@ nav {
   color: white;
 }
 
-nav input {
-  width: 270px;
-  height: 30px;
+label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.search-input {
+  width: 235px;
+  height: 40px;
   padding: 0 10px;
-  margin: 0 10px;
-  border: 0;
+  margin: 10px 0;
+  border: 1px solid lightgray;
   border-radius: 30px;
 }
 
-nav button {
+button {
   width: 70px;
   height: 25px;
+  border: 1px solid black;
   border-radius: 30px;
   font-size: 16px;
   font-weight: 700;
+}
+
+.container {
+  display: flex;
+  margin: 30px 0;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  margin-right: 25px;
+}
+
+.btn--add {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.btn--get {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    width: 960px;
+    margin: 30px auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1140px;
+  }
 }

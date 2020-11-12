@@ -1,9 +1,8 @@
 import React from 'react';
 import './Table.css';
 
-function Table({walletInfo}) {
+function Table({walletsInfo}) {
   return(
-    <div className='container'>
       <table>
         <thead>
           <tr>
@@ -13,16 +12,19 @@ function Table({walletInfo}) {
             <th>Latest opration time</th>
           </tr>
         </thead>
-        {/* <tbody>
-          <tr>
-            <td>{walletInfo.address}</td>
-            <td></td>
-            <td>{walletInfo.createTime}</td>
-            <td>{walletInfo.latestOprationTime}</td>
-          </tr>
-        </tbody>  */}
+        <tbody>
+          {walletsInfo.map(({ address = 'blabla', balance, create_time, latest_opration_time }) => {
+            return (
+              <tr>
+                <td>{address}</td>
+                <td>{balance}</td>
+                <td>{create_time}</td>
+                <td>{latest_opration_time}</td>
+              </tr>
+            )
+          })}
+        </tbody> 
       </table>
-    </div>
   )
 }
 

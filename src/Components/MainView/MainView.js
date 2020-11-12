@@ -4,54 +4,66 @@ import { getWalletData } from '../../requests';
 import './MainView.css';
 
 function MainView() {
-  const [searchWallet, setWallet] = useState('');
-  const [walletInfo, setWalletInfo] = useState({});
+  const [newWallet, setWallet] = useState('');
+  const [wallets, updateWallets] = useState([]);
+  const [walletsData, setWalletsData] = useState([]);
+  const [isAdded, setIsAdded] = useState(false);
 
+  const getMultipleWalletsData = () => {
+    const fetchWalletDataPromises = [];
 
-  const sendRequest = (searchWallet) => {
-    // console.log(searchWallet);
-
-    let wallets = [];
-    getWalletData(searchWallet).then(data => {
-      console.log(data);
-      let {address, balance, create_time, latest_opration_time} = data;
-
-      // const listOfData = {
-      //   address,
-      //   create_time,
-      //   latest_opration_time
-      // }
-
-      // let wallets = walletInfo;
-      wallets = [...wallets, {address, balance, create_time, latest_opration_time}]
-      setWalletInfo(wallets);
+    wallets.forEach(wallet => {
+      const walletData = getWalletData(wallet)
+      fetchWalletDataPromises.push(walletData)
     })
-    .catch(err => {
-      console.error(err);
-    });
-    setWallet('');
+
+    Promise.all(fetchWalletDataPromises).then(values => {
+      setWalletsData(values);
+    })
   }
-    console.log(walletInfo);
+
+  const addNewWalet = () => {
+    const walletsUpdated = [...wallets];
+
+    walletsUpdated.push(newWallet);
+    updateWallets(walletsUpdated);
+
+    setIsAdded(true);
+    setWallet('');
+  } 
 
   return(
     <>
       <nav>
         <div className='container'>
-          <label htmlFor='walletFinder'>Search for a wallet</label>
-          <input 
-          id='walletFinder'
-          autoComplete='off' 
-          // onKeyPress={event => sendRequest(searchWallet, event)}
-          onChange={event => {setWallet(event.target.value)}}
-          value={searchWallet}
-          aria-label='Enter the wallet you want to search'
-          type='text'
-          placeholder='TGmcz6YNqeXUoNryw4LcPeTWmo1DWrxRUK'  
-          />
-          <button onClick={() => sendRequest(searchWallet)}>Find</button>
+        
         </div>
       </nav>
-      <Table walletInfo={walletInfo}/>
+      <div className='container container--mainview'>
+        <aside>
+          <label htmlFor='walletFinder'>Search for a wallet</label>
+          <input
+            className='search-input'
+            id='walletFinder'
+            autoComplete='off' 
+            // onKeyPress={event => sendRequest(searchWallet, event)}
+            onChange={event => {setWallet(event.target.value)}}
+            value={newWallet}
+            aria-label='Enter the wallet you want to search'
+            type='text'
+            placeholder='TGmcz6YNqeXUoNryw4LcPeTWmo1DWrxRUK'  
+          />
+          <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
+
+          {wallets.map(wallet => {
+            return (
+              <input type="text" value={wallet}/>
+            )
+          })}
+          {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}
+        </aside>
+        <Table walletsInfo={walletsData}/>
+      </div>
     </>
   )
 };
