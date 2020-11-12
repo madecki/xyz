@@ -35,7 +35,7 @@ function MainView() {
         walletsUpdated.push(newWallet);
         updateWallets(walletsUpdated);
         setWallet('');
-        setAddedState(true);;
+        setAddedState(true);
       }
     });
   } 
@@ -68,7 +68,7 @@ function MainView() {
 
           {wallets.map(wallet => {
             return (
-              <input type="text" value={wallet}/>
+              <input className='wallet-input' type="text" value={wallet}/>
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}
