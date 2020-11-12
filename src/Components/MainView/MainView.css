@@ -15,9 +15,15 @@ label {
   width: 235px;
   height: 40px;
   padding: 0 10px;
-  margin: 10px 0;
+  margin: 10px 0 5px 0;
   border: 1px solid lightgray;
   border-radius: 30px;
+}
+
+.search-input--error {
+  border: 1px solid red;
+  font-weight: 700;
+  color: red;
 }
 
 button {
@@ -38,6 +44,13 @@ aside {
   display: flex;
   flex-direction: column;
   margin-right: 25px;
+}
+
+.error-info {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: red;
 }
 
 .btn--add {

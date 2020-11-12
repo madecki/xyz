@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Table from '../Table/Table';
-import { getWalletData } from '../../requests';
+import { getWalletData, walletValidation } from '../../requests';
 import './MainView.css';
 
 function MainView() {
   const [newWallet, setWallet] = useState('');
   const [wallets, updateWallets] = useState([]);
   const [walletsData, setWalletsData] = useState([]);
-  const [isAdded, setIsAdded] = useState(false);
+  const [isAdded, setAddedState] = useState(false);
+  const [isValidated, setValidationState] = useState(true);
 
   const getMultipleWalletsData = () => {
     const fetchWalletDataPromises = [];
@@ -25,11 +26,18 @@ function MainView() {
   const addNewWalet = () => {
     const walletsUpdated = [...wallets];
 
-    walletsUpdated.push(newWallet);
-    updateWallets(walletsUpdated);
-
-    setIsAdded(true);
-    setWallet('');
+    walletValidation(newWallet).then(resp => {
+      const { result } = resp;
+      setValidationState(result);
+      if(!result){
+        return false;
+      } else {
+        walletsUpdated.push(newWallet);
+        updateWallets(walletsUpdated);
+        setWallet('');
+        setAddedState(true);;
+      }
+    });
   } 
 
   return(
@@ -43,7 +51,7 @@ function MainView() {
         <aside>
           <label htmlFor='walletFinder'>Search for a wallet</label>
           <input
-            className='search-input'
+            className={`search-input ${!isValidated ? 'search-input--error' : ''}`}
             id='walletFinder'
             autoComplete='off' 
             // onKeyPress={event => sendRequest(searchWallet, event)}
@@ -53,6 +61,9 @@ function MainView() {
             type='text'
             placeholder='TGmcz6YNqeXUoNryw4LcPeTWmo1DWrxRUK'  
           />
+          {!isValidated && (
+            <p className='error-info'>Wallet is invalid!</p>
+          )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
 
           {wallets.map(wallet => {
