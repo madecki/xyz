@@ -3,7 +3,16 @@ import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import './Table.css';
 
-function Table({walletsInfo}) {
+function Table({walletsData, setWalletsData}) {
+
+  const removeRow = (index) => {
+    const removeArr = [...walletsData].filter(wallet => wallet !== walletsData[index])
+
+    setWalletsData(removeArr);
+  }
+
+  console.log(walletsData);
+
   return(
       <table>
         <thead>
@@ -14,10 +23,10 @@ function Table({walletsInfo}) {
             <th>Latest opration time</th>
           </tr>
         </thead>
-        <tbody>
-          {walletsInfo.map(({ address, balance, create_time, latest_opration_time }) => {
+          {walletsData.map(({ address, balance, create_time, latest_opration_time }, index) => {
             return (
-              <tr key={uuidv4()}>
+              <tbody key={uuidv4()}>
+              <tr id={index} key={uuidv4()}>
                 <td>{address}</td>
                 <td>{balance}</td>
                 <td>
@@ -26,10 +35,13 @@ function Table({walletsInfo}) {
                 <td>
                   {`${format(new Date(latest_opration_time), 'h:mm a dd.MM.yy')}`}
                 </td>
+                <td>
+                <button onClick={() => removeRow(index)}>Remove</button>
+                </td>
               </tr>
+              </tbody> 
             )
           })}
-        </tbody> 
       </table>
   )
 }

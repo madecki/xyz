@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Table from '../Table/Table';
 import { getWalletData, walletValidation } from '../../requests';
 import Nav from '../Nav/Nav';
-import { v4 as uuidv4 } from 'uuid';
 import './MainView.css';
 
 function MainView() {
@@ -64,14 +63,14 @@ function MainView() {
           )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
 
-          {wallets.map((wallet) => {
+          {wallets.map((wallet, index) => {
             return (
-              <input className='wallet-input' type="text" value={wallet} readOnly key={uuidv4()} />
+              <input className='wallet-input' type="text" value={wallet} readOnly key={index} />
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}
         </aside>
-        <Table walletsInfo={walletsData}/>
+        <Table walletsData={walletsData} setWalletsData={setWalletsData}/>
       </div>
     </>
   )
