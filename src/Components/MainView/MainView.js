@@ -10,6 +10,7 @@ function MainView() {
   const [walletsData, setWalletsData] = useState([]);
   const [isAdded, setAddedState] = useState(false);
   const [isValidated, setValidationState] = useState(true);
+  const [isInBase, setIsInBase] = useState(false);
 
   const getMultipleWalletsData = () => {
     const fetchWalletDataPromises = [];
@@ -23,23 +24,44 @@ function MainView() {
       setWalletsData(values);
     })
   }
-
+  console.log(walletsData)
   const addNewWalet = () => {
     const walletsUpdated = [...wallets];
 
+    if(wallets.includes(newWallet)){
+      setIsInBase(true);
+      return false;
+    }
+    setIsInBase(false);
+
     walletValidation(newWallet).then(resp => {
       const { result } = resp;
+
       setValidationState(result);
+
       if(!result){
         return false;
       } else {
         walletsUpdated.push(newWallet);
+
         updateWallets(walletsUpdated);
+
         setWallet('');
+
         setAddedState(true);
       }
     });
   } 
+
+  const removeInput = (index) => {
+    const updatedListWallet = [...wallets].filter(wallet => wallet !== wallets[index])
+    
+    updateWallets(updatedListWallet);
+
+    if(wallets.length === 1) {
+      setAddedState(false);
+    }
+  }
 
   return(
     <>
@@ -59,13 +81,19 @@ function MainView() {
             placeholder='TGmcz6YNqeXUoNryw4LcPeTWmo1DWrxRUK'  
           />
           {!isValidated && (
-            <p className='error-info'>Wallet is invalid!</p>
+            <p className='error-info'>The wallet is invalid!</p>
+          )}
+          {isInBase && (
+            <p className='error-info'>The wallet is already in the base!</p>
           )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
 
           {wallets.map((wallet, index) => {
             return (
+              <div className='input-and-btn'>
               <input className='wallet-input' type="text" value={wallet} readOnly key={index} />
+              <button className='btn--remove-input' onClick={() => removeInput(index)}>X</button>
+              </div>
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}

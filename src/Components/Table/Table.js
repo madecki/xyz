@@ -6,12 +6,10 @@ import './Table.css';
 function Table({walletsData, setWalletsData}) {
 
   const removeRow = (index) => {
-    const removeArr = [...walletsData].filter(wallet => wallet !== walletsData[index])
+    const updatedWalletsData = [...walletsData].filter(wallet => wallet !== walletsData[index])
 
-    setWalletsData(removeArr);
+    setWalletsData(updatedWalletsData);
   }
-
-  console.log(walletsData);
 
   return(
       <table>
@@ -23,7 +21,7 @@ function Table({walletsData, setWalletsData}) {
             <th>Latest opration time</th>
           </tr>
         </thead>
-          {walletsData.map(({ address, balance, create_time, latest_opration_time }, index) => {
+          {walletsData.map(({ address = 'No data', balance = 'No data', create_time = 'No data', latest_opration_time = 'No data' }, index) => {
             return (
               <tbody key={uuidv4()}>
               <tr id={index} key={uuidv4()}>
