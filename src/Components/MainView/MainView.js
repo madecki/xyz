@@ -24,7 +24,7 @@ function MainView() {
       setWalletsData(values);
     })
   }
-  console.log(walletsData)
+
   const addNewWalet = () => {
     const walletsUpdated = [...wallets];
 
