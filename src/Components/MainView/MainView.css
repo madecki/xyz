@@ -45,6 +45,10 @@ aside {
   color: red;
 }
 
+.inputs-label {
+  margin-bottom: 5px;
+}
+
 .input-and-btn {
   display: flex;
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Table from '../Table/Table';
 import { getWalletData, walletValidation } from '../../requests';
 import Nav from '../Nav/Nav';
+import { v4 as uuidv4 } from 'uuid';
 import './MainView.css';
 
 function MainView() {
@@ -68,7 +69,7 @@ function MainView() {
       <Nav />
       <div className='container container--mainview'>
         <aside>
-          <label htmlFor='walletFinder'>Search for a wallet</label>
+          <label htmlFor='walletFinder'>Add a wallet:</label>
           <input
             className={`search-input ${!isValidated ? 'search-input--error' : ''}`}
             id='walletFinder'
@@ -87,18 +88,18 @@ function MainView() {
             <p className='error-info'>The wallet is already in the base!</p>
           )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
-
+          {isAdded ? <label className='inputs-label'>Added wallets:</label> : ''}
           {wallets.map((wallet, index) => {
             return (
-              <div className='input-and-btn'>
+              <div className='input-and-btn' key={uuidv4()}>
               <input className='wallet-input' type="text" value={wallet} readOnly key={index} />
-              <button className='btn--remove-input' onClick={() => removeInput(index)}>X</button>
+              <button className='btn--remove-input' onClick={() => removeInput(index)} key={uuidv4()}>X</button>
               </div>
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}
         </aside>
-        <Table walletsData={walletsData} setWalletsData={setWalletsData}/>
+        <Table walletsData={walletsData} setWalletsData={setWalletsData} />
       </div>
     </>
   )

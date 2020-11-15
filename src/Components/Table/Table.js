@@ -5,30 +5,27 @@ import './Table.css';
 
 function Table({walletsData, setWalletsData}) {
   const [order, setOrder] = useState(false);
-  const headersArray = [
-    { name: 'Address', index: 'address' },
-    { name: 'Balance', index: 'balance' },
-    { name: 'Create time', index: 'create_time', order: {order}  },
-    { name: 'Latest operation time', index: 'latest_opration_time' }
+
+  const columnHeaders = [
+    { label: 'Address', key: 'address' },
+    { label: 'Balance', key: 'balance' },
+    { label: 'Create time', key: 'create_time' },
+    { label: 'Latest operation time', key: 'latest_opration_time' }
   ]
+
   const removeRow = (index) => {
     const updatedWalletsData = [...walletsData].filter(wallet => wallet !== walletsData[index])
 
     setWalletsData(updatedWalletsData);
   }
 
-  const sortColumn = (index, address) => {
-    const column = walletsData[index].address;
-    // false === 'desc'
-    console.log(walletsData[index].address);
+  const sortColumn = (key) => {
     if(order === false) {
       setOrder(true);
-      walletsData = walletsData.sort((a,b) => a[column] > b[column] ? 1 : -1)
-      console.log(walletsData)
+      walletsData = walletsData.sort((a,b) => a[key] > b[key] ? 1 : -1)
     } else {
       setOrder(false);
-      walletsData = walletsData.sort((a,b) => a[column] < b[column] ? 1 : -1)
-      console.log(walletsData)
+      walletsData = walletsData.sort((a,b) => a[key] < b[key] ? 1 : -1)
     }
   }
 
@@ -36,38 +33,32 @@ function Table({walletsData, setWalletsData}) {
       <table>
         <thead>
           <tr>
-          {walletsData.map(({ address }, index ) => {
-            return(
-            <th onClick={() => sortColumn(index, address)}>XXXXXX</th>
-            )
-          })}
+            {columnHeaders.map(( { label, key } ) => {
+              return(
+              <th key={key} onClick={() => sortColumn(key)}>{label}</th>
+              )
+            })}
           </tr>
-          {/* <tr>
-            <th name='address' onClick={(name) => sortColumn(name)}>Address</th>
-            <th name='balance' onClick={(name) => sortColumn(name)}>Balance</th>
-            <th name='createTime' onClick={(name) => sortColumn(name)}>Create time</th>
-            <th name='latestOpration' onClick={(name) => sortColumn(name)}>Latest opration time</th>
-          </tr> */}
         </thead>
+        <tbody>
           {walletsData.map(({ address = 'No data', balance = 'No data', create_time = 'No data', latest_opration_time = 'No data' }, index) => {
             return (
-              <tbody key={uuidv4()}>
               <tr id={index} key={uuidv4()}>
                 <td>{address}</td>
                 <td>{balance}</td>
                 <td>
-                  {`${format(new Date(create_time), 'h:mm a dd.MM.yy')}`}
+                  {`${format(new Date(create_time), 'H:mm dd.MM.yy')}`}
                 </td>
                 <td>
-                  {`${format(new Date(latest_opration_time), 'h:mm a dd.MM.yy')}`}
+                  {`${format(new Date(latest_opration_time), 'H:mm dd.MM.yy')}`}
                 </td>
                 <td>
                 <button onClick={() => removeRow(index)}>Remove</button>
                 </td>
               </tr>
-              </tbody> 
             )
           })}
+        </tbody> 
       </table>
   )
 }
