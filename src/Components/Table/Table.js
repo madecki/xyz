@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
+import sortIcon from '../../Assets/sort.svg';
+import trashIcon from '../../Assets/trash.svg'
 import './Table.css';
 
 function Table({walletsData, setWalletsData}) {
@@ -37,7 +39,9 @@ function Table({walletsData, setWalletsData}) {
               return(
               <th key={key}>
                 {label} 
-                <button onClick={() => sortColumn(key)} >V</button>
+                <button className='btn--sort' onClick={() => sortColumn(key)}>
+                  <img className='sort-icon' src={sortIcon} alt='Sort icon' />
+                </button>
               </th>
               )
             })}
@@ -56,7 +60,9 @@ function Table({walletsData, setWalletsData}) {
                   {`${format(new Date(latest_opration_time), 'H:mm dd.MM.yy')}`}
                 </td>
                 <td>
-                <button onClick={() => removeRow(index)}>Remove</button>
+                <button className='btn--trash' onClick={() => removeRow(index)}>
+                  <img className='trash-icon' src={trashIcon} alt='Trash icon' />
+                </button>
                 </td>
               </tr>
             )
