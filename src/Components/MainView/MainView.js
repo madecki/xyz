@@ -10,9 +10,9 @@ function MainView() {
   const [newWallet, setWallet] = useState('');
   const [wallets, updateWallets] = useState([]);
   const [walletsData, setWalletsData] = useState([]);
+  const [displayedWallets, setDisplayedWalletsData] = useState([]);
   const [isAdded, setAddedState] = useState(false);
-  const [isValidated, setValidationState] = useState(true);
-  const [isInBase, setIsInBase] = useState(false);
+  const [validationOutput, setValidationState] = useState('');
   const [filter, setFilter] = useState('');
 
   const getMultipleWalletsData = () => {
@@ -25,6 +25,7 @@ function MainView() {
 
     Promise.all(fetchWalletDataPromises).then(values => {
       setWalletsData(values);
+      setDisplayedWalletsData(values);
     })
   }
 
@@ -32,10 +33,10 @@ function MainView() {
     const walletsUpdated = [...wallets];
 
     if(wallets.includes(newWallet)){
-      setIsInBase(true);
+      setValidationState('sdsadasdas');
       return false;
     }
-    setIsInBase(false);
+    setValidationState('');
 
     walletValidation(newWallet).then(resp => {
       const { result } = resp;
@@ -82,7 +83,15 @@ function MainView() {
         )
       })
 
-      setWalletsData(filteredWallet);
+      setDisplayedWalletsData(filteredWallet);
+    } else {
+      setDisplayedWalletsData(walletsData);
+    }
+  }
+
+  class Wallet {
+    constructor(wallet) {
+      this.balance = wallet.balance ? wallet.balance : 'No data' 
     }
   }
 
@@ -93,7 +102,7 @@ function MainView() {
         <aside>
           <label htmlFor='walletFinder'>Add a wallet:</label>
           <input
-            className={`search-input ${!isValidated ? 'search-input--error' : ''}`}
+            className={`search-input ${!validationOutput ? 'search-input--error' : ''}`}
             id='walletFinder'
             autoComplete='off' 
             // onKeyPress={event => sendRequest(searchWallet, event)}
@@ -103,11 +112,8 @@ function MainView() {
             type='text'
             placeholder='TGmcz6YNqeXUoNryw4LcPeTWmo1DWrxRUK'  
           />
-          {!isValidated && (
-            <p className='error-info'>The wallet is invalid!</p>
-          )}
-          {isInBase && (
-            <p className='error-info'>The wallet is already in the base!</p>
+          {validationOutput && (
+            <p className='error-info'>{validationOutput}</p>
           )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
           {isAdded ? <label className='inputs-label'>Added wallets:</label> : ''}
@@ -130,7 +136,7 @@ function MainView() {
             aria-label='Enter the word you want to search for'
           />
           <button onClick={() => filterBy()}>Search</button>
-          <Table walletsData={walletsData} setWalletsData={setWalletsData} filter={filter} />
+          <Table walletsData={displayedWallets} setWalletsData={setDisplayedWalletsData} filter={filter} />
         </div>
       </div>
     </>
