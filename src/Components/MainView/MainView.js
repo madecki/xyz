@@ -4,6 +4,8 @@ import { getWalletData, walletValidation } from '../../requests';
 import Nav from '../Nav/Nav';
 import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
+import trashIcon from '../../Assets/trash.svg';
+import filterIcon from '../../Assets/filter.svg';
 import './MainView.css';
 
 function MainView() {
@@ -70,15 +72,16 @@ function MainView() {
     if(filter) {
       const filteredWallet = walletsData.filter(wallet => {
 
-        const createTime = format(new Date(wallet.create_time), 'H:mm dd.MM.yy');
-        const latestOperationTime = format(new Date(wallet.latest_opration_time), 'H:mm dd.MM.yy');       
-        const isBalance = wallet.balance ? wallet.balance : wallet.balance === 'No data'
+        const createTime = wallet.create_time ? format(new Date(wallet.create_time), 'H:mm dd.MM.yy') : wallet.create_time === 'No data';
+        const latestOperationTime = wallet.latest_opration_time ? format(new Date(wallet.latest_opration_time), 'H:mm dd.MM.yy') : wallet.latest_opration_time === 'No data';       
+        const balance = wallet.balance ? wallet.balance : wallet.balance === 'No data';
+        const address = wallet.address ? wallet.address : wallet.address === 'No data';
 
         return (
-          wallet.address.toString().toLowerCase().includes(filter.toLowerCase()) ||
+          address.toString().toLowerCase().includes(filter.toLowerCase()) ||
           createTime.toString().toLowerCase().includes(filter.toLowerCase()) ||
           latestOperationTime.toString().toLowerCase().includes(filter.toLowerCase()) ||
-          isBalance.toString().toLowerCase().includes(filter.toLowerCase())
+          balance.toString().toLowerCase().includes(filter.toLowerCase())
         )
       })
 
@@ -114,22 +117,29 @@ function MainView() {
           {wallets.map((wallet, index) => {
             return (
               <div className='input-and-btn' key={uuidv4()}>
-              <input className='wallet-input' type="text" value={wallet} readOnly key={index} aria-label='Your added wallets' />
-              <button className='btn--remove-input' onClick={() => removeInput(index)} key={uuidv4()}>X</button>
+                <input className='input--walet' type="text" value={wallet} readOnly key={index} aria-label='Your added wallets' />
+                <button className='btn--remove-input' onClick={() => removeInput(index)} key={uuidv4()}>
+                  <img className='trash-icon' src={trashIcon} alt='Trash icon' />
+                </button>
               </div>
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}
         </aside>
-        <div className='input-and-table'>
-          <input 
-            type='text' 
-            autoComplete='off' 
-            onChange={event => {setFilter(event.target.value)}}
-            value={filter}
-            aria-label='Enter the word you want to search for'
-          />
-          <button onClick={() => filterBy()}>Search</button>
+        <div className='main-display'>
+          <div className='input-and-btn'>
+            <input 
+              className='input--filter'
+              type='text' 
+              autoComplete='off' 
+              onChange={event => {setFilter(event.target.value)}}
+              value={filter}
+              aria-label='Enter the word you want to search for'
+            />
+            <button className='btn--filter' onClick={() => filterBy()}>
+              <img className='filter-icon' src={filterIcon} alt='Filter icon' />
+            </button>
+          </div>
           <Table walletsData={walletsData} setWalletsData={setWalletsData} filter={filter} />
         </div>
       </div>

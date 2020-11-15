@@ -6,8 +6,15 @@ table {
 }
 
 thead th {
-  width: calc(100% / 4);
   border: 1px solid #bbbbbb;
+}
+
+thead th:first-child {
+  width: 320px;
+}
+
+tr td:first-child {
+  padding: 0 10px;
 }
 
 td {
@@ -16,4 +23,26 @@ td {
 
 td:last-child {
   border: 0;
+}
+
+.btn--sort {
+  width: 30px;
+  height: 30px;
+  border: 0;
+}
+
+.sort-icon {
+  width: 25px;
+  vertical-align: middle;
+}
+
+.btn--trash {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  vertical-align: middle;
+}
+
+.trash-icon {
+  width: 25px;
 }

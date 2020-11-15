@@ -1,7 +1,21 @@
 nav {
-  display: flex;
-  align-items: center;
   height: 50px;
   background-color: black;
   color: white;
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.logo {
+  width: 35px;
+}
+
+.menu-icon {
+  width: 35px;
 }
