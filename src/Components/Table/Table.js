@@ -35,7 +35,10 @@ function Table({walletsData, setWalletsData}) {
           <tr>
             {columnHeaders.map(( { label, key } ) => {
               return(
-              <th key={key} onClick={() => sortColumn(key)}>{label}</th>
+              <th key={key}>
+                {label} 
+                <button onClick={() => sortColumn(key)} >V</button>
+              </th>
               )
             })}
           </tr>

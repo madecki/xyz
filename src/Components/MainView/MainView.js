@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Table from '../Table/Table';
 import { getWalletData, walletValidation } from '../../requests';
 import Nav from '../Nav/Nav';
+import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import './MainView.css';
 
@@ -12,6 +13,7 @@ function MainView() {
   const [isAdded, setAddedState] = useState(false);
   const [isValidated, setValidationState] = useState(true);
   const [isInBase, setIsInBase] = useState(false);
+  const [filter, setFilter] = useState('');
 
   const getMultipleWalletsData = () => {
     const fetchWalletDataPromises = [];
@@ -64,6 +66,26 @@ function MainView() {
     }
   }
 
+  const filterBy = () => {
+    if(filter) {
+      const filteredWallet = walletsData.filter(wallet => {
+
+        const createTime = format(new Date(wallet.create_time), 'H:mm dd.MM.yy');
+        const latestOperationTime = format(new Date(wallet.latest_opration_time), 'H:mm dd.MM.yy');       
+        const isBalance = wallet.balance ? wallet.balance : wallet.balance === 'No data'
+
+        return (
+          wallet.address.toString().toLowerCase().includes(filter.toLowerCase()) ||
+          createTime.toString().toLowerCase().includes(filter.toLowerCase()) ||
+          latestOperationTime.toString().toLowerCase().includes(filter.toLowerCase()) ||
+          isBalance.toString().toLowerCase().includes(filter.toLowerCase())
+        )
+      })
+
+      setWalletsData(filteredWallet);
+    }
+  }
+
   return(
     <>
       <Nav />
@@ -77,7 +99,7 @@ function MainView() {
             // onKeyPress={event => sendRequest(searchWallet, event)}
             onChange={event => {setWallet(event.target.value)}}
             value={newWallet}
-            aria-label='Enter the wallet you want to search'
+            aria-label='Enter the wallet you want to add'
             type='text'
             placeholder='TGmcz6YNqeXUoNryw4LcPeTWmo1DWrxRUK'  
           />
@@ -92,14 +114,24 @@ function MainView() {
           {wallets.map((wallet, index) => {
             return (
               <div className='input-and-btn' key={uuidv4()}>
-              <input className='wallet-input' type="text" value={wallet} readOnly key={index} />
+              <input className='wallet-input' type="text" value={wallet} readOnly key={index} aria-label='Your added wallets' />
               <button className='btn--remove-input' onClick={() => removeInput(index)} key={uuidv4()}>X</button>
               </div>
             )
           })}
           {isAdded ? <button className='btn--get' onClick={getMultipleWalletsData}>Get fresh data</button> : ''}
         </aside>
-        <Table walletsData={walletsData} setWalletsData={setWalletsData} />
+        <div className='input-and-table'>
+          <input 
+            type='text' 
+            autoComplete='off' 
+            onChange={event => {setFilter(event.target.value)}}
+            value={filter}
+            aria-label='Enter the word you want to search for'
+          />
+          <button onClick={() => filterBy()}>Search</button>
+          <Table walletsData={walletsData} setWalletsData={setWalletsData} filter={filter} />
+        </div>
       </div>
     </>
   )

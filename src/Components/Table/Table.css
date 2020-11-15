@@ -13,3 +13,7 @@ thead th {
 td {
   border: 1px solid #bbbbbb;
 }
+
+td:last-child {
+  border: 0;
+}
