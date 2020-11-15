@@ -110,7 +110,7 @@ function MainView() {
             <p className='error-info'>The wallet is invalid!</p>
           )}
           {isInBase && (
-            <p className='error-info'>The wallet is already in the base!</p>
+            <p className='error-info'>The wallet is already on the list!</p>
           )}
           <button className='btn--add' onClick={() => addNewWalet()}>ADD</button>
           {isAdded ? <label className='inputs-label'>Added wallets:</label> : ''}

@@ -1,8 +1,19 @@
 table {
-  width: 100%;
+  display: block;
   border-collapse: collapse;
   border-spacing: 0;
   text-align: center;
+  overflow-x: auto;
+}
+
+table td,
+table th {
+  padding: 5px;
+  text-align: left;
+}
+
+th {
+  background-color: #e9e9e9;
 }
 
 thead th {
@@ -11,10 +22,6 @@ thead th {
 
 thead th:first-child {
   width: 320px;
-}
-
-tr td:first-child {
-  padding: 0 10px;
 }
 
 td {
@@ -29,6 +36,7 @@ td:last-child {
   width: 30px;
   height: 30px;
   border: 0;
+  background-color: #e9e9e9;
 }
 
 .sort-icon {

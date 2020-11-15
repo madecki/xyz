@@ -1,10 +1,28 @@
+.container--mainview {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px;
+}
+
+.container {
+  margin: 30px 0;
+}
+
+aside {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 250px;
+  margin-bottom: 50px;
+}
+
 label {
   font-size: 16px;
   font-weight: 700;
 }
 
 .search-input {
-  width: 265px;
+  width: 230px;
   height: 40px;
   padding: 0 10px;
   margin: 10px 0 5px 0;
@@ -27,17 +45,6 @@ button {
   font-weight: 700;
 }
 
-.container {
-  display: flex;
-  margin: 30px 0;
-}
-
-aside {
-  display: flex;
-  flex-direction: column;
-  margin-right: 25px;
-}
-
 .error-info {
   margin: 0 0 10px 0;
   font-size: 16px;
@@ -51,6 +58,7 @@ aside {
 
 .input-and-btn {
   display: flex;
+  width: 100%;
 }
 
 .input--walet {
@@ -100,10 +108,29 @@ aside {
   width: 30px;
 }
 
+@media (min-width: 768px) {
+}
+
 @media (min-width: 1024px) {
   .container {
     width: 960px;
     margin: 30px auto;
+  }
+
+  .container--mainview {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+  }
+
+  aside {
+    width: initial;
+    margin: 0 25px 0 0;
+  }
+
+  .search-input {
+    width: 280px;
   }
 }
 
